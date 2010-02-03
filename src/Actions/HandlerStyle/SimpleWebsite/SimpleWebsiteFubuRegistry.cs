@@ -1,4 +1,3 @@
-using System;
 using FubuMVC.Core;
 using SimpleWebsite.Core;
 using SimpleWebsite.Handlers;
@@ -19,7 +18,7 @@ namespace SimpleWebsite
 
             Routes.UrlPolicy<HandlerUrlPolicy>();
 
-            JsonOutputIf.CallMatches(action => action.Returns<AjaxResponse>());
+            Output.ToJson.WhenCallMatches(action => action.Returns<AjaxResponse>());
 
             Views.TryToAttach(findViews => findViews.by_ViewModel_and_Namespace());
 

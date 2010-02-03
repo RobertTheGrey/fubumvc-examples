@@ -25,7 +25,7 @@ namespace SimpleWebsite
 
             Routes.UrlPolicy<EndPointUrlPolicy>();
 
-            JsonOutputIf.CallMatches(action => action.Returns<AjaxResponse>());
+            Output.ToJson.WhenCallMatches(action => action.Returns<AjaxResponse>());
 
             Views.TryToAttach(findViews => findViews.by_ViewModel_and_Namespace());
 

@@ -16,7 +16,7 @@ namespace SimpleWebsite
 
             Routes.IgnoreControllerNamespaceEntirely();
 
-            JsonOutputIf.CallMatches(action => action.Returns<AjaxResponse>());
+            Output.ToJson.WhenCallMatches(action => action.Returns<AjaxResponse>());
 
             Views.TryToAttach(findViews => findViews.by_ViewModel_and_Namespace_and_MethodName());
 
