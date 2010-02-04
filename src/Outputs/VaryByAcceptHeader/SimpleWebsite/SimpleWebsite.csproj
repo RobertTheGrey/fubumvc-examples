@@ -66,7 +66,10 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Behaviors\CustomXmlSerializer.cs" />
     <Compile Include="Behaviors\RenderVariableOutput.cs" />
+    <Compile Include="Behaviors\RenderXmlNode.cs" />
+    <Compile Include="Behaviors\RenderXmlOutput.cs" />
     <Compile Include="Behaviors\VariableOutputNode.cs" />
     <Compile Include="Core\IEntity.cs" />
     <Compile Include="Controllers\List.aspx.cs">

@@ -10,15 +10,17 @@ namespace SimpleWebsite.Behaviors
 {
     public class VariableOutputNode : OutputNode
     {
-        private readonly IList<Output> _outputs = new List<Output>();
+        private readonly Type _modelType;
+        private readonly IList<OutputHolder> _outputs = new List<OutputHolder>();
 
-        public VariableOutputNode() : base(typeof(RenderVariableOutput))
+        public VariableOutputNode(Type modelType) : base(typeof(RenderVariableOutput))
         {
+            _modelType = modelType;
         }
 
-        public void AddOutput(Func<AcceptTypeDetector, bool> isMatch, OutputNode output)
+        public void AddOutput(Func<OutputFormatDetector, bool> isMatch, OutputNode output)
         {
-            _outputs.Add(new Output(isMatch, output));
+            _outputs.Add(new OutputHolder(isMatch, output));
         }
 
         protected override void configureObject(ObjectDef def)
@@ -26,30 +28,28 @@ namespace SimpleWebsite.Behaviors
             ObjectDef currentCandidate = null;
             foreach (var pair in _outputs.Reverse())
             {
-                var candidate = new ObjectDef(typeof(Candidate));
-                candidate.Child(typeof(Func<AcceptTypeDetector, bool>), pair.IsMatch);
-                candidate.Dependencies.Add(new ConfiguredDependency { Definition = pair.Output1.ToObjectDef(), DependencyType = typeof(IActionBehavior) });
+                var candidate = new ObjectDef(typeof(ConditionalOutput));
+                candidate.Child(typeof(Func<OutputFormatDetector, bool>), pair.Predicate);
+                candidate.Dependencies.Add(new ConfiguredDependency { Definition = pair.OutputNode.ToObjectDef(), DependencyType = typeof(IActionBehavior) });
                 if (currentCandidate != null)
                 {
-                    candidate.Dependencies.Add(new ConfiguredDependency { Definition = currentCandidate, DependencyType = typeof(Candidate) });
+                    candidate.Dependencies.Add(new ConfiguredDependency { Definition = currentCandidate, DependencyType = typeof(ConditionalOutput) });
                 }
                 currentCandidate = candidate;
             }
 
-            def.Dependencies.Add(new ConfiguredDependency { Definition = currentCandidate, DependencyType = typeof(Candidate) });
+            def.Dependencies.Add(new ConfiguredDependency { Definition = currentCandidate, DependencyType = typeof(ConditionalOutput) });
         }
 
-        class Output
+        class OutputHolder
         {
-            private readonly Func<AcceptTypeDetector, bool> _isMatch;
-            private readonly OutputNode _output;
-            public Func<AcceptTypeDetector, bool> IsMatch { get { return _isMatch; } }
-            public OutputNode Output1 { get { return _output; } }
+            public Func<OutputFormatDetector, bool> Predicate { get; private set; }
+            public OutputNode OutputNode { get; private set; }
 
-            public Output(Func<AcceptTypeDetector, bool> isMatch, OutputNode output)
+            public OutputHolder(Func<OutputFormatDetector, bool> predicate, OutputNode outputNode)
             {
-                _isMatch = isMatch;
-                _output = output;
+                Predicate = predicate;
+                OutputNode = outputNode;
             }
         }
     }

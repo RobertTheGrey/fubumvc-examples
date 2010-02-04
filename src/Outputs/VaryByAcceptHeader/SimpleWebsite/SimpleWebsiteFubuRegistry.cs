@@ -22,9 +22,13 @@ namespace SimpleWebsite
             Output.ToJson.WhenCallMatches(action => action.Returns<AjaxResponse>());
             Output.To(call =>
             {
-                var node = new VariableOutputNode();
-                node.AddOutput(a => true, new RenderHtmlDocumentNode());
-                node.AddOutput(a => false, new RenderHtmlTagNode());
+                var modelType = call.OutputType();
+                var node = new VariableOutputNode(modelType);
+                node.AddOutput(a => a.RenderFormat == "json", new RenderJsonNode(modelType));
+                node.AddOutput(a => a.RenderFormat == "xml", new RenderXmlNode(modelType));
+                node.AddOutput(a => a.RenderFormat == "doc", new RenderHtmlDocumentNode());
+                node.AddOutput(a => a.RenderFormat == "tag", new RenderHtmlTagNode());
+                node.AddOutput(a => true, new WebFormView("~/Controllers/List.aspx"));
                 return node;
             }).WhenTheOutputModelIs<IEnumerable>();
             //Views.TryToAttach(findViews => findViews.by_ViewModel_and_Namespace_and_MethodName());
