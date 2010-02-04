@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using SimpleWebsite.Core;
 using FubuMVC.Core;
@@ -57,8 +59,13 @@ namespace SimpleWebsite.Controllers
         public object Item { get; set; }
     }
 
-    public class ListMoviesViewModel
+    public class ListMoviesViewModel :IEnumerable
     {
         public IEnumerable<Movie> Movies { get; set; }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return Movies.GetEnumerator();
+        }
     }
 }
