@@ -4,7 +4,6 @@ using FubuMVC.Core;
 using FubuMVC.Core.Registration;
 using FubuMVC.Core.Registration.Nodes;
 using FubuMVC.Core.View;
-using TypeExtensions=FubuMVC.Core.TypeExtensions;
 
 namespace SimpleWebsite.Behaviors
 {
@@ -16,16 +15,19 @@ namespace SimpleWebsite.Behaviors
             graph.Actions().Where(x => x.HasOutputBehavior() && x.OutputType().CanBeCastTo<IEnumerable>() && getRenderViewNode(x) != null)
                 .Each(x =>
                 {
-                    var viewNode = getRenderViewNode(x);
-
-
                     var modelType = x.OutputType();
-                    var node = new VariableOutputNode(modelType);
-                    viewNode.ReplaceWith(node);
+                    var view = getRenderViewNode(x);
+                    var json = new RenderJsonNode(modelType);
+                    var xml = new RenderXmlNode(modelType);
 
-                    node.AddOutput(a => a.RenderFormat == "json", new RenderJsonNode(modelType));
-                    node.AddOutput(a => a.RenderFormat == "xml", new RenderXmlNode(modelType));
-                    node.AddOutput(a => true, viewNode);
+                    var variableOut = new VariableOutputNode();
+                    view.ReplaceWith(variableOut);
+
+                    variableOut.AddOutput(a => a.RenderFormat == "json", json);
+                    variableOut.AddOutput(a => a.RenderFormat == "xml", xml);
+                    variableOut.AddOutput(a => a.AcceptsFormat("text/html"), view);
+                    variableOut.AddOutput(a => a.AcceptsFormat("application/xml"), xml);
+                    variableOut.AddOutput(a => a.AcceptsFormat("application/json"), json);
 
                     graph.Observer.RecordCallStatus(x, "Adding variable output behavior");
                 });

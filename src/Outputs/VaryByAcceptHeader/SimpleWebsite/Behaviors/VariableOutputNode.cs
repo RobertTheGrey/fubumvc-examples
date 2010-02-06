@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using FubuMVC.Core.Behaviors;
 using FubuMVC.Core.Registration.Nodes;
 using FubuMVC.Core.Registration.ObjectGraph;
@@ -10,13 +9,10 @@ namespace SimpleWebsite.Behaviors
 {
     public class VariableOutputNode : OutputNode
     {
-        private readonly Type _modelType;
         private readonly IList<OutputHolder> _outputs = new List<OutputHolder>();
 
-        public VariableOutputNode(Type modelType) : base(typeof(RenderVariableOutput))
-        {
-            _modelType = modelType;
-        }
+        public VariableOutputNode() : base(typeof(RenderVariableOutput))
+        {}
 
         public void AddOutput(Func<OutputFormatDetector, bool> isMatch, OutputNode output)
         {

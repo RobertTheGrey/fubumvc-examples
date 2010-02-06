@@ -9,13 +9,11 @@ namespace SimpleWebsite.Behaviors
     public class RenderVariableOutput : BasicBehavior
     {
         private readonly IFubuRequest _fubuRequest;
-        private readonly IOutputWriter _outputWriter;
         private readonly ConditionalOutput _outputs;
 
-        public RenderVariableOutput(IFubuRequest fubuRequest, IOutputWriter outputWriter, ConditionalOutput outputs) : base(PartialBehavior.Executes)
+        public RenderVariableOutput(IFubuRequest fubuRequest, ConditionalOutput outputs) : base(PartialBehavior.Executes)
         {
             _fubuRequest = fubuRequest;
-            _outputWriter = outputWriter;
             _outputs = outputs;
         }
 
