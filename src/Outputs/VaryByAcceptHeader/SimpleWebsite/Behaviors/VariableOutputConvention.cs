@@ -21,11 +21,11 @@ namespace SimpleWebsite.Behaviors
 
                     var modelType = x.OutputType();
                     var node = new VariableOutputNode(modelType);
-                    viewNode.InsertDirectlyBefore(node);
-                    //need to figure out how to disconnect existing viewnode, and insert into variable node
+                    viewNode.ReplaceWith(node);
 
                     node.AddOutput(a => a.RenderFormat == "json", new RenderJsonNode(modelType));
                     node.AddOutput(a => a.RenderFormat == "xml", new RenderXmlNode(modelType));
+                    node.AddOutput(a => true, viewNode);
 
                     graph.Observer.RecordCallStatus(x, "Adding variable output behavior");
                 });
