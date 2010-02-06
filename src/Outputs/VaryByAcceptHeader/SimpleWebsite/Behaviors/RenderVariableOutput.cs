@@ -28,12 +28,6 @@ namespace SimpleWebsite.Behaviors
             {
                 behavior.Invoke();
             }
-            else
-            {
-                var output = detector.Accept + "\n";
-                output += "behavior: " + string.Format("{0}", behavior);
-                _outputWriter.Write("text/plain", output);
-            }
             return DoNext.Continue;
         }
     }

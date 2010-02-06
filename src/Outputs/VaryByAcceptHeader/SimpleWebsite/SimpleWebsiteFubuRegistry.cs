@@ -1,6 +1,4 @@
-using System.Collections;
 using FubuMVC.Core;
-using FubuMVC.Core.Registration.Nodes;
 using SimpleWebsite.Behaviors;
 using SimpleWebsite.Controllers;
 using SimpleWebsite.Core;
@@ -20,18 +18,9 @@ namespace SimpleWebsite
             Routes.IgnoreControllerNamespaceEntirely();
 
             Output.ToJson.WhenCallMatches(action => action.Returns<AjaxResponse>());
-            Output.To(call =>
-            {
-                var modelType = call.OutputType();
-                var node = new VariableOutputNode(modelType);
-                node.AddOutput(a => a.RenderFormat == "json", new RenderJsonNode(modelType));
-                node.AddOutput(a => a.RenderFormat == "xml", new RenderXmlNode(modelType));
-                node.AddOutput(a => a.RenderFormat == "doc", new RenderHtmlDocumentNode());
-                node.AddOutput(a => a.RenderFormat == "tag", new RenderHtmlTagNode());
-                node.AddOutput(a => true, new WebFormView("~/Controllers/List.aspx"));
-                return node;
-            }).WhenTheOutputModelIs<IEnumerable>();
-            //Views.TryToAttach(findViews => findViews.by_ViewModel_and_Namespace_and_MethodName());
+            Views.TryToAttach(findViews => findViews.by_ViewModel_and_Namespace_and_MethodName());
+
+            ApplyConvention<VariableOutputConvention>();
 
             // Note: Outside of a sample application, you would only configure services that Fubu requires within your FubuRegistry
             // Non-Fubu services should be configured through your container in the usual way (StructureMap Registry, etc)
