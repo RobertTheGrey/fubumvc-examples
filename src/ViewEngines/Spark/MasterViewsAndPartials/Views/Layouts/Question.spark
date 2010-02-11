@@ -1,0 +1,12 @@
+﻿<use master="Application" />
+
+<html>
+	<head>
+		<use content="head" />
+	</head>
+	<body>
+		<div><------- I'm from the Question Layout Begin -------></div>
+		<use content="view" />
+		<div><------- I'm from the Question Layout End-------></div>
+	</body>
+</html>

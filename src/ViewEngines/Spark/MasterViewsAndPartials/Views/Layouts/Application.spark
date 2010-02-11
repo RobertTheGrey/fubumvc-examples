@@ -1,0 +1,10 @@
+﻿<html>
+	<head>
+		<use content="head" />
+	</head>
+	<body>
+		<div><------- I'm from the Application Layout Begin -------></div>
+		<use content="view" />
+		<div><------- I'm from the Application Layout End-------></div>
+	</body>
+</html>

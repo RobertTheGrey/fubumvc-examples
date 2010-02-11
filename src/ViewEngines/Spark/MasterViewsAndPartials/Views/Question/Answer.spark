@@ -1,0 +1,5 @@
+﻿<viewdata model="MasterAndPartialViews.Models.Question.AnswerViewModel" />
+
+<div><h2>The answer is: ${Model.Answer}</h2></div>
+
+<div><a href="/Question/Ask">Ask another...</a></div>

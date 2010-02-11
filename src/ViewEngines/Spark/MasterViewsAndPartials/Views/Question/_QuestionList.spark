@@ -1,0 +1,7 @@
+﻿<!-- expects a list of questions as an input from anything that uses this partial -->
+<div>
+	Here is the list of questions you can ask:
+	<ul>
+		<li each="var question in questions">${question}</li>
+	</ul>
+</div>

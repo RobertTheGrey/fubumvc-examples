@@ -1,0 +1,9 @@
+﻿<viewdata model="MasterAndPartialViews.Models.Question.QuestionListViewModel" />
+
+<QuestionList questions="Model.Questions" />
+
+<form action="Answer" method="POST">
+	<div>Ask your question: 
+		<input id="SomeId" type="text" width="500" name="Question"/><input type="Submit"/>
+	</div>
+</form>
